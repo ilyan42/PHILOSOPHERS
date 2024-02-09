@@ -6,7 +6,7 @@
 /*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:15:41 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/07 20:24:12 by ilyanbendib      ###   ########.fr       */
+/*   Updated: 2024/02/09 12:01:47 by ilyanbendib      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,4 @@ int main(void)
 	pthread_mutex_destroy(&mutex);
 	return 0;
 }
+
