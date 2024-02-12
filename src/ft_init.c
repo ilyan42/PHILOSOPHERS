@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
+/*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:22:48 by ilyanbendib       #+#    #+#             */
-/*   Updated: 2024/02/09 19:31:08 by ilyanbendib      ###   ########.fr       */
+/*   Updated: 2024/02/12 18:46:48 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 int ft_init_param(t_philo *philo, char **av)
 {
-	if (atoi(av[1]) < 2)
-	{
-		printf("Error: wrong number of philosophers\n");
-		exit(1);
-	}
 	philo->num_of_philos = atoi(av[1]);
 	philo->time_to_die = atoi(av[2]);
 	philo->time_to_eat = atoi(av[3]);
@@ -42,17 +37,17 @@ int ft_init_param(t_philo *philo, char **av)
 	return (1);
 }
 
-int creat_philo(t_philo *philos)
+int creat_philo(t_philo *philo)
 {
 	int i;
 
 	i = 0;
-	philos = malloc(sizeof(t_philo) * philos->num_of_philos);
-	if (!philos)
-		return (0);
-	while (i < philos->num_of_philos)
+	philo[i].num_of_fork_in_table = 0;
+	while (i < philo->num_of_philos)
 	{
-		pthread_create(&philos[i].philo, NULL, &routine, NULL);
+		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
+		pthread_join(philo[i].thread, NULL);
+		philo[i].num_of_fork_in_table++;
 		i++;
 	}
 	return (1);
