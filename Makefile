@@ -1,4 +1,4 @@
-NAME = philosophers
+NAME = philosophers.out
 
 CC = cc -g3
 CFLAGS = -Wall -Wextra -Werror 
