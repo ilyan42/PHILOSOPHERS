@@ -12,30 +12,22 @@
 
 #include "../include/philosophers.h"
 
+void ft_error_msg(char *msg)
+{
+    printf("Error: %s\n", msg);
+    exit(EXIT_FAILURE);
+}
+
 int main(int ac, char **av)
 {
 	t_philo philo;
 
 	if (ac != 6)
-	{
-		printf("Error: wrong number of arguments\n");
-		return (1);
-	}
+        ft_error_msg("wrong number of arguments");
 	if (ft_init_param(&philo, av) == 0)
-	{
-		printf("Error: failed to initialize philo\n");
-		return (EXIT_FAILURE);
-	}
-	printf ("philo->num_of_philos = %d\n", philo.num_of_philos);
-	printf ("philo.time_to_die = %zu\n", philo.time_to_die);
-	printf ("philo.time_to_eat = %zu\n", philo.time_to_eat);
-	printf ("philo.time_to_sleep = %zu\n", philo.time_to_sleep);
-	printf ("philo.num_times_to_eat = %d\n", philo.num_times_to_eat);
+        ft_error_msg("wrong arguments");
 	if (creat_philo(&philo) == 0)
-	{
-		printf("Error: failed to create philos\n");
-		return (EXIT_FAILURE);
-	}
+	        ft_error_msg("failed to create philosophers");
 	return 0;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:14:31 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/12 17:32:51 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:28:26 by ilyanbendib      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 typedef struct s_philo
 {
 	pthread_t		thread;
-	int				num_of_fork_in_table;
+	int				id;
 	int				eating;
 	int				meals_eaten;
 	size_t			last_meal;
@@ -35,7 +35,7 @@ typedef struct s_philo
 	int				dead;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	pthread_mutex_t	*write_lock;
+	pthread_mutex_t	*think_lock;
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*meal_lock;
 }					t_philo;
@@ -58,6 +58,8 @@ int sleeping(t_philo *philo);
 void take_fork(t_philo *philo);
 void eat(t_philo *philo);
 void think(t_philo *philo);
+void ft_error_msg(char *msg);
+void init_mutex(t_philo *philo);
 
 
 #endif
