@@ -6,15 +6,17 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 19:31:32 by ilyanbendib       #+#    #+#             */
-/*   Updated: 2024/02/19 15:07:09 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:40:23 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-void print_id(t_philo *philo)
+void print_philo(char *msg, t_philo *philo, int id)
 {
-	printf("id: %d\n", philo->id);
+	pthread_mutex_lock(philo->print_lock);
+	printf("%ld %d %s\n", get_current_time() - philo->start_time, id, msg);
+	pthread_mutex_unlock(philo->print_lock);
 }
 size_t	get_current_time(void)
 {
@@ -37,7 +39,7 @@ int	ft_usleep(size_t milliseconds)
 
 int sleeping(t_philo *philo)
 {
-	printf("is sleeping\n");
+	print_philo("is sleeping", philo, philo->id);
 	ft_usleep(philo->time_to_sleep);
 	return (0);
 }
@@ -55,13 +57,13 @@ int ft_check_death(t_philo *philo)
 int take_a_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
-	printf("has taken r_fork\n");
+	print_philo("has taken r_fork", philo, philo->id);
 	if (ft_check_death(philo) == 0)
 		return (0);
 	pthread_mutex_lock(philo->l_fork);
-	printf("has taken l_fork\n");
+	print_philo("has taken l_fork", philo, philo->id);
 	philo->eating = 1;
-	printf ("is eating\n");
+	print_philo("is eating", philo, philo->id);
 	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = get_current_time();
 	philo->meals_eaten++;
@@ -77,7 +79,7 @@ int take_a_fork(t_philo *philo)
 
 void think(t_philo *philo)
 {
-	printf("is thinking\n");
+	print_philo("is thinking", philo, philo->id);
 	while (!take_a_fork(philo))
 	{
 		ft_usleep(50);

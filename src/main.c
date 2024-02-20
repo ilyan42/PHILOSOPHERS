@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:15:41 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/16 14:21:33 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:23:39 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void ft_init_param(t_program *program, t_philo *philo)
 	program->dead_flag = 0;
 	pthread_mutex_init(&program->dead_lock, NULL);
 	pthread_mutex_init(&program->meal_lock, NULL);
-	pthread_mutex_init(&program->think_lock, NULL);
+	pthread_mutex_init(&program->print_lock, NULL);
 }
 
 void ft_init_forks(pthread_mutex_t *forks, char **av)
@@ -71,7 +71,7 @@ void ft_init_philos(t_philo *philo, t_program *program, pthread_mutex_t *forks, 
 		philo[i].last_meal = get_current_time();
 		philo[i].start_time = get_current_time();
 		philo[i].dead = 0;
-		philo[i].think_lock = &program->think_lock;
+		philo[i].print_lock = &program->print_lock;
 		philo[i].dead_lock = &program->dead_lock;
 		philo[i].meal_lock = &program->meal_lock;
 		philo[i].l_fork = &forks[i];
