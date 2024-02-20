@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
+/*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:14:31 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/15 12:28:26 by ilyanbendib      ###   ########.fr       */
+/*   Updated: 2024/02/16 15:41:23 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+
+#define PHILO_MAX 200
 
 typedef struct s_philo
 {
@@ -45,21 +47,29 @@ typedef struct s_program
 	int				dead_flag;
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;
-	pthread_mutex_t	write_lock;
+	pthread_mutex_t think_lock;
 	t_philo			*philos;
 }					t_program;
 
-int ft_init_param(t_philo *philo, char **av);
-void *routine(void *arg);
-int creat_philo(t_philo *philo);
+/********FT_INIT********/
+
+void		ft_init_args(t_philo *philo, char **av);
+int		creat_philo(t_philo *philo);
+
+/********FT_UTILS********/
+
+int		ft_atoi(char *str);
+
+/********FT_ROUTINE_PHILO********/
+
 size_t	get_current_time(void);
-int	ft_usleep(size_t milliseconds);
-int sleeping(t_philo *philo);
-void take_fork(t_philo *philo);
-void eat(t_philo *philo);
-void think(t_philo *philo);
-void ft_error_msg(char *msg);
-void init_mutex(t_philo *philo);
+int		ft_usleep(size_t milliseconds);
+int		sleeping(t_philo *philo);
+void	*routine(void *arg);
+
+/********FT_ERROR_MSG********/
+
+void	ft_error_msg(char *msg);
 
 
 #endif

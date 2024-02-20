@@ -1,4 +1,4 @@
-NAME = philosophers.out
+NAME = philosophers
 
 CC = cc -g3
 CFLAGS = -Wall -Wextra -Werror 
@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra -Werror
 SRCS = 			src/main.c\
 				src/ft_init.c\
 				src/ft_routine_philo.c\
+				src/ft_utils.c\
 
 OBJS = $(SRCS:.c=.o)
 
