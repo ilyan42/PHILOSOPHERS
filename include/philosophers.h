@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:14:31 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/20 13:23:18 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:50:11 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-#define PHILO_MAX 200
+#define PHILO_MAX 300
 
 typedef struct s_philo
 {

@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:15:41 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/20 13:23:39 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:30:30 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ void ft_init_forks(pthread_mutex_t *forks, char **av)
 
 int ft_check_args(t_philo *philo, char **av)
 {
-	// if (philo->num_of_philos <= 0 || philo->time_to_die <= 0 || philo->time_to_eat <= 0 || philo->time_to_sleep <= 0)
-	// {
-	// 	printf("Error: wrong arguments\n");
-	// 	return (0);
-	// }
+	if (philo->num_of_philos <= 0 || philo->time_to_die <= 0 || philo->time_to_eat <= 0 || philo->time_to_sleep <= 0)
+	{
+		printf("Error: wrong arguments\n");
+		return (0);
+	}
 	if (av[5])
 	{
 		philo->num_times_to_eat = atoi(av[5]);
@@ -65,7 +65,7 @@ void ft_init_philos(t_philo *philo, t_program *program, pthread_mutex_t *forks, 
 	i = 0;
 	while (i < philo->num_of_philos)
 	{
-		philo[i].id = i;
+		philo[i].id = i + 1;
 		philo[i].eating = 0;
 		philo[i].meals_eaten = 0;
 		philo[i].last_meal = get_current_time();
@@ -74,8 +74,18 @@ void ft_init_philos(t_philo *philo, t_program *program, pthread_mutex_t *forks, 
 		philo[i].print_lock = &program->print_lock;
 		philo[i].dead_lock = &program->dead_lock;
 		philo[i].meal_lock = &program->meal_lock;
-		philo[i].l_fork = &forks[i];
-		philo[i].r_fork = &forks[(i + 1) % philo->num_of_philos];
+		if (i == 0)
+		{
+			philo[i].l_fork = &forks[philo->num_of_philos - 1];
+			philo[i].r_fork = &forks[i];
+		}
+		else
+		{
+			philo[i].l_fork = &forks[i - 1];
+			philo[i].r_fork = &forks[i];
+		}
+		printf ("philo init: %d\n", philo[i].id);
+		printf("i = %d\n", i);
 		i++;
 	}
 }
@@ -86,11 +96,13 @@ int main(int ac, char **av)
 	t_program program;
 	pthread_mutex_t forks[PHILO_MAX];
 
-	if (ft_check_args(philo, av) == 0)
-		return(0);
 	ft_init_param(&program, philo);
 	ft_init_forks(forks, av);
 	ft_init_args(philo, av);
+	if (ft_check_args(philo, av) == 0)
+		return(0);
+	if (philo->num_of_philos > PHILO_MAX)
+		ft_error_msg("too many philosophers");
 	printf("num_of_philos: %d\n", philo->num_of_philos);
 	printf("time_to_die: %zu\n", philo->time_to_die);
 	printf("time_to_eat: %zu\n", philo->time_to_eat);
