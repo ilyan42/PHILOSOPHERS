@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:14:31 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/21 11:50:11 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:37:54 by ilyanbendib      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ typedef struct s_program
 /********FT_INIT********/
 
 void		ft_init_args(t_philo *philo, char **av);
-int		creat_philo(t_philo *philo);
+int	creat_philo(t_program *program, pthread_mutex_t *forks);
+
 
 /********FT_UTILS********/
 

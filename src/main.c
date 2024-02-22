@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:15:41 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/21 12:30:30 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:54:12 by ilyanbendib      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,8 @@ void ft_init_philos(t_philo *philo, t_program *program, pthread_mutex_t *forks, 
 		philo[i].print_lock = &program->print_lock;
 		philo[i].dead_lock = &program->dead_lock;
 		philo[i].meal_lock = &program->meal_lock;
-		if (i == 0)
-		{
-			philo[i].l_fork = &forks[philo->num_of_philos - 1];
-			philo[i].r_fork = &forks[i];
-		}
-		else
-		{
-			philo[i].l_fork = &forks[i - 1];
-			philo[i].r_fork = &forks[i];
-		}
-		printf ("philo init: %d\n", philo[i].id);
-		printf("i = %d\n", i);
+		philo[i].r_fork = &forks[i];
+		philo[i].l_fork = &forks[(i + 1) % philo->num_of_philos];
 		i++;
 	}
 }
@@ -110,7 +100,7 @@ int main(int ac, char **av)
 	printf("num_times_to_eat: %d\n", philo->num_times_to_eat);
 	printf("forks: %d\n", ft_atoi(av[1]));
 	ft_init_philos(philo, &program, forks, av);
-	creat_philo(philo);
+	creat_philo(&program, forks);
 	return 0;
 }
 
