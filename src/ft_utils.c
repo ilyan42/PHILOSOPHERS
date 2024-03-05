@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 13:38:40 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/29 11:54:45 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:20:59 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void print_philo(char *msg, t_philo *philo, int id)
 {
 	pthread_mutex_lock(philo->print_lock);
 	
-	printf("%06zu %d %s\n", get_current_time() - philo->start_time, id, msg);
+	printf("%06zu \033[1;32m%d\033[0m \033[1;31m%s\033[0m\n", get_current_time() - philo->start_time, id, msg);
 	pthread_mutex_unlock(philo->print_lock);
 }
 
