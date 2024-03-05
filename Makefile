@@ -7,6 +7,7 @@ SRCS = 			src/main.c\
 				src/ft_init.c\
 				src/ft_routine_philo.c\
 				src/ft_utils.c\
+				src/death_philo.c\
 
 OBJS = $(SRCS:.c=.o)
 

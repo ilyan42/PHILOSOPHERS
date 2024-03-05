@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
+/*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 13:38:40 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/21 14:05:28 by ilyanbendib      ###   ########.fr       */
+/*   Updated: 2024/02/29 11:54:45 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,48 @@ int ft_atoi(char *str)
 		i++;
 	}
 	return (res * sign);
+}
+
+void print_philo(char *msg, t_philo *philo, int id)
+{
+	pthread_mutex_lock(philo->print_lock);
+	
+	printf("%06zu %d %s\n", get_current_time() - philo->start_time, id, msg);
+	pthread_mutex_unlock(philo->print_lock);
+}
+
+size_t	get_current_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+int	ft_usleep(size_t milliseconds)
+{
+	size_t	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds)
+		usleep(50);
+	return (0);
+}
+
+void	destory_all(char *str, t_program *program, pthread_mutex_t *forks)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+		printf("%s\n", str);
+	pthread_mutex_destroy(&program->print_lock);
+	pthread_mutex_destroy(&program->meal_lock);
+	pthread_mutex_destroy(&program->dead_lock);
+	while (i < program->philos[0].num_of_philos)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
 }

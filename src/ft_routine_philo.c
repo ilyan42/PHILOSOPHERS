@@ -6,46 +6,13 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 19:31:32 by ilyanbendib       #+#    #+#             */
-/*   Updated: 2024/02/22 11:49:18 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:53:09 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-int check_died_flg(t_philo *philo)
-{
-	pthread_mutex_lock(philo->dead_lock);
-	if (philo->dead == 1)
-		return (pthread_mutex_unlock(philo->dead_lock), 1);
-	return (pthread_mutex_unlock(philo->dead_lock), 0);
-}
 
-void print_philo(char *msg, t_philo *philo, int id)
-{
-	pthread_mutex_lock(philo->print_lock);
-	
-	printf("%ld %d %s\n", get_current_time() - philo->start_time, id, msg);
-	pthread_mutex_unlock(philo->print_lock);
-}
-
-size_t	get_current_time(void)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-}
-
-int	ft_usleep(size_t milliseconds)
-{
-	size_t	start;
-
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
-		usleep(50);
-	return (0);
-}
 
 int sleeping(t_philo *philo)
 {
@@ -54,16 +21,11 @@ int sleeping(t_philo *philo)
 	return (0);
 }
 
-int	philosopher_dead(t_philo *philo, size_t time_to_die)
+void think(t_philo *philo)
 {
-	pthread_mutex_lock(philo->meal_lock);
-	if (get_current_time() - philo->last_meal >= time_to_die
-		&& philo->eating == 0)
-		return (pthread_mutex_unlock(philo->meal_lock), 1);
-	pthread_mutex_unlock(philo->meal_lock);
-	return (0);
+	print_philo("is thinking", philo, philo->id);
+	ft_usleep(philo->time_to_sleep);
 }
-
 
 void take_a_fork(t_philo *philo)
 {
@@ -87,12 +49,6 @@ void take_a_fork(t_philo *philo)
 	philo->eating = 0;
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
-}
-
-void think(t_philo *philo)
-{
-	print_philo("is thinking", philo, philo->id);
-	ft_usleep(50);
 }
 
 

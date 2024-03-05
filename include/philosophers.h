@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilyanbendib <ilyanbendib@student.42.fr>    +#+  +:+       +#+        */
+/*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:14:31 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/21 15:37:54 by ilyanbendib      ###   ########.fr       */
+/*   Updated: 2024/02/29 12:01:18 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_philo
 	size_t			start_time;
 	int				num_of_philos;
 	int				num_times_to_eat;
-	int				dead;
+	int				*dead;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*print_lock;
@@ -53,20 +53,34 @@ typedef struct s_program
 
 /********FT_INIT********/
 
-void		ft_init_args(t_philo *philo, char **av);
-int	creat_philo(t_program *program, pthread_mutex_t *forks);
-
+void	ft_init_args(t_philo *philo, char **av);
+void	ft_init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks, char **argv);
+int		creat_philo(t_program *program, pthread_mutex_t *forks);
+void	ft_init_param(t_program *program, t_philo *philos);
+void	ft_init_forks(pthread_mutex_t *forks, int num_of_philos);
 
 /********FT_UTILS********/
 
 int		ft_atoi(char *str);
+void	destory_all(char *msg, t_program *program, pthread_mutex_t *forks);
+void	print_philo(char *msg, t_philo *philo, int id);
+size_t	get_current_time(void);
+int	ft_usleep(size_t time);
 
 /********FT_ROUTINE_PHILO********/
 
-size_t	get_current_time(void);
-int		ft_usleep(size_t milliseconds);
-int		sleeping(t_philo *philo);
 void	*routine(void *arg);
+int		sleeping(t_philo *philo);
+void	think(t_philo *philo);
+void	take_a_fork(t_philo *philo);
+
+/********FT_DEATH_PHILO********/
+
+int		check_died_flg(t_philo *philo);
+int		check_if_dead(t_philo *philos);
+int		check_if_all_ate(t_philo *philos);
+int		philosopher_dead(t_philo *philo, size_t time_to_die);
+void	*monitor(void *arg);
 
 /********FT_ERROR_MSG********/
 
