@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 11:52:22 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/29 11:53:43 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:40:59 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	check_if_all_ate(t_philo *philos)
 	return (0);
 }
 
-void	*monitor(void *pointer)
+void	*loop_dead(void *pointer)
 {
 	t_philo	*philos;
 
@@ -85,7 +85,7 @@ void	*monitor(void *pointer)
 	while (1)
 	{
 		if (check_if_dead(philos) == 1 || check_if_all_ate(philos) == 1)
-			break ;
+			return (pointer);
 	}
 	return (pointer);
 }

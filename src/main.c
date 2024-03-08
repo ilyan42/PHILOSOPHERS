@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:15:41 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/29 12:01:06 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:30:06 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int main(int ac, char **av)
 	ft_init_param(&program, philo);
 	ft_init_forks(forks, ft_atoi(av[1]));
 	ft_init_philos(philo, &program, forks, av);	
-	creat_philo(&program, forks);
+	ft_creat_thread_philo(&program, forks);
+	destroy_mutex_init(NULL, &program, forks);
 	return 0;
 }
 

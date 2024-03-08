@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 13:38:40 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/03/05 13:20:59 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:30:11 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ int	ft_usleep(size_t milliseconds)
 
 	start = get_current_time();
 	while ((get_current_time() - start) < milliseconds)
-		usleep(50);
+		usleep(500);
 	return (0);
 }
 
-void	destory_all(char *str, t_program *program, pthread_mutex_t *forks)
+void	destroy_mutex_init(char *str, t_program *program, pthread_mutex_t *forks)
 {
 	int	i;
 

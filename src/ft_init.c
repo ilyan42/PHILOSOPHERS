@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:22:48 by ilyanbendib       #+#    #+#             */
-/*   Updated: 2024/02/29 11:55:29 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:33:32 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void ft_init_args(t_philo *philo, char **av)
 {
-	philo->num_of_philos = atoi(av[1]);
-	philo->time_to_die = atoi(av[2]);
-	philo->time_to_eat = atoi(av[3]);
-	philo->time_to_sleep = atoi(av[4]);
-	philo->num_times_to_eat = -1;
+	philo->num_of_philos = ft_atoi(av[1]);
+	philo->time_to_die = ft_atoi(av[2]);
+	philo->time_to_eat = ft_atoi(av[3]);
+	philo->time_to_sleep = ft_atoi(av[4]);
+	if (av[5])
+		philo->num_times_to_eat = ft_atoi(av[5]);
+	else
+		philo->num_times_to_eat = -1;
 }
 
 void	ft_init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks,
@@ -40,36 +43,33 @@ void	ft_init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks,
 		philos[i].meal_lock = &program->meal_lock;
 		philos[i].dead = &program->dead_flag;
 		philos[i].l_fork = &forks[i];
-		if (i == 0)
-			philos[i].r_fork = &forks[philos[i].num_of_philos - 1];
-		else
-			philos[i].r_fork = &forks[i - 1];
+		philos[i].r_fork = &forks[(i + 1) % philos[0].num_of_philos];
 		i++;
 	}
 }
 
-int	creat_philo(t_program *program, pthread_mutex_t *forks)
+int	ft_creat_thread_philo(t_program *program, pthread_mutex_t *forks)
 {
-	pthread_t	observer;
+	pthread_t	philos;
 	int			i;
 
-	if (pthread_create(&observer, NULL, &monitor, program->philos) != 0)
-		destory_all("Thread creation error", program, forks);
+	if (pthread_create(&philos, NULL, &loop_dead, program->philos) != 0)
+		destroy_mutex_init("Thread creation error", program, forks);
 	i = 0;
 	while (i < program->philos[0].num_of_philos)
 	{
 		if (pthread_create(&program->philos[i].thread, NULL, &routine,
 				&program->philos[i]) != 0)
-			destory_all("Thread creation error", program, forks);
+			destroy_mutex_init("Thread creation error", program, forks);
 		i++;
 	}
 	i = 0;
-	if (pthread_join(observer, NULL) != 0)
-		destory_all("Thread join error", program, forks);
+	// if (pthread_join(phlios, NULL) != 0)
+	// 	destroy_mutex_init("Thread join error", program, forks);
 	while (i < program->philos[0].num_of_philos)
 	{
 		if (pthread_join(program->philos[i].thread, NULL) != 0)
-			destory_all("Thread join error", program, forks);
+			destroy_mutex_init("Thread join error", program, forks);
 		i++;
 	}
 	return (0);

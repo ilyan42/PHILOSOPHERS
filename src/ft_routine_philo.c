@@ -6,13 +6,11 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 19:31:32 by ilyanbendib       #+#    #+#             */
-/*   Updated: 2024/02/29 11:53:09 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:15:51 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-
 
 int sleeping(t_philo *philo)
 {
@@ -24,19 +22,26 @@ int sleeping(t_philo *philo)
 void think(t_philo *philo)
 {
 	print_philo("is thinking", philo, philo->id);
-	ft_usleep(philo->time_to_sleep);
+	// ft_usleep(philo->time_to_sleep);
+}
+
+void ft_just_only_one_philo(t_philo *philo)
+{
+	pthread_mutex_lock(philo->r_fork);
+	print_philo("has taken a fork", philo, philo->id);
+	ft_usleep(philo->time_to_die);
+	return ;
 }
 
 void take_a_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->r_fork);
-	print_philo("has taken a fork", philo, philo->id);
 	if (philo->num_of_philos == 1)
 	{
-		ft_usleep(philo->time_to_die);
-		pthread_mutex_unlock(philo->r_fork);
+		ft_just_only_one_philo(philo);
 		return ;
 	}
+	pthread_mutex_lock(philo->r_fork);
+	print_philo("has taken a fork", philo, philo->id);
 	pthread_mutex_lock(philo->l_fork);
 	print_philo("has taken a fork", philo, philo->id);
 	philo->eating = 1;

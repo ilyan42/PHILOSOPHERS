@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:14:31 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/02/29 12:01:18 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:29:43 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ typedef struct s_program
 
 void	ft_init_args(t_philo *philo, char **av);
 void	ft_init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks, char **argv);
-int		creat_philo(t_program *program, pthread_mutex_t *forks);
+int		ft_creat_thread_philo(t_program *program, pthread_mutex_t *forks);
 void	ft_init_param(t_program *program, t_philo *philos);
 void	ft_init_forks(pthread_mutex_t *forks, int num_of_philos);
 
 /********FT_UTILS********/
 
 int		ft_atoi(char *str);
-void	destory_all(char *msg, t_program *program, pthread_mutex_t *forks);
+void	destroy_mutex_init(char *msg, t_program *program, pthread_mutex_t *forks);
 void	print_philo(char *msg, t_philo *philo, int id);
 size_t	get_current_time(void);
 int	ft_usleep(size_t time);
@@ -80,7 +80,7 @@ int		check_died_flg(t_philo *philo);
 int		check_if_dead(t_philo *philos);
 int		check_if_all_ate(t_philo *philos);
 int		philosopher_dead(t_philo *philo, size_t time_to_die);
-void	*monitor(void *arg);
+void	*loop_dead(void *arg);
 
 /********FT_ERROR_MSG********/
 
