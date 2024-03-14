@@ -6,23 +6,22 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 11:52:22 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/03/08 12:40:59 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:02:34 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-int	philosopher_dead(t_philo *philo, size_t time_to_die)
+int	philosopher_dead(t_philo *philo, size_t tt_d)
 {
 	pthread_mutex_lock(philo->meal_lock);
-	if (get_current_time() - philo->last_meal >= time_to_die
-		&& philo->eating == 0)
+	if (timestamp() - philo->last_meal >= tt_d && philo->eating == 0)
 		return (pthread_mutex_unlock(philo->meal_lock), 1);
 	pthread_mutex_unlock(philo->meal_lock);
 	return (0);
 }
 
-int check_died_flg(t_philo *philo)
+int	check_died_flg(t_philo *philo)
 {
 	pthread_mutex_lock(philo->dead_lock);
 	if (*philo->dead == 1)
@@ -37,7 +36,7 @@ int	check_if_dead(t_philo *philos)
 	i = 0;
 	while (i < philos[0].num_of_philos)
 	{
-		if (philosopher_dead(&philos[i], philos[i].time_to_die))
+		if (philosopher_dead(&philos[i], philos[i].tt_d))
 		{
 			print_philo("died", &philos[i], philos[i].id);
 			pthread_mutex_lock(philos[0].dead_lock);
@@ -50,7 +49,7 @@ int	check_if_dead(t_philo *philos)
 	return (0);
 }
 
-int	check_if_all_ate(t_philo *philos)
+int	check_nb_meal(t_philo *philos)
 {
 	int	i;
 	int	finished_eating;
@@ -82,10 +81,10 @@ void	*loop_dead(void *pointer)
 	t_philo	*philos;
 
 	philos = (t_philo *)pointer;
-	while (1)
+	while (check_died_flg(philos) == 0 || check_nb_meal(philos) == 0)
 	{
-		if (check_if_dead(philos) == 1 || check_if_all_ate(philos) == 1)
-			return (pointer);
+		if (check_if_dead(philos) == 1 || check_nb_meal(philos) == 1)
+			break ;
 	}
 	return (pointer);
 }

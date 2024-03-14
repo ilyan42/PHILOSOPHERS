@@ -6,18 +6,18 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 13:38:40 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/03/08 17:30:11 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:18:49 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-int ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
-	int i;
-	int sign;
-	int res;
-	
+	int	i;
+	int	sign;
+	int	res;
+
 	i = 0;
 	sign = 1;
 	res = 0;
@@ -37,44 +37,50 @@ int ft_atoi(char *str)
 	return (res * sign);
 }
 
-void print_philo(char *msg, t_philo *philo, int id)
+void	print_philo(char *msg, t_philo *philo, int id)
 {
-	pthread_mutex_lock(philo->print_lock);
-	
-	printf("%06zu \033[1;32m%d\033[0m \033[1;31m%s\033[0m\n", get_current_time() - philo->start_time, id, msg);
-	pthread_mutex_unlock(philo->print_lock);
+	size_t	time;
+
+	time = timestamp() - philo->start_time;
+	if (!check_died_flg(philo))
+	{
+		pthread_mutex_lock(philo->print_lock);
+		printf("%06llu \033[1;32m%d\033[0m \033[1;31m%s\033[0m\n", timestamp()
+			- philo->start_time, id, msg);
+		pthread_mutex_unlock(philo->print_lock);
+	}
 }
 
-size_t	get_current_time(void)
+long long	timestamp(void)
 {
-	struct timeval	time;
+	struct timeval	t;
 
-	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	gettimeofday(&t, NULL);
+	return (t.tv_sec * 1000 + t.tv_usec / 1000);
 }
 
 int	ft_usleep(size_t milliseconds)
 {
 	size_t	start;
 
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
-		usleep(500);
+	start = timestamp();
+	while ((timestamp() - start) < milliseconds)
+		usleep(50);
 	return (0);
 }
 
-void	destroy_mutex_init(char *str, t_program *program, pthread_mutex_t *forks)
+void	destroy_mutex_init(char *str, t_table *table,
+		pthread_mutex_t *forks)
 {
 	int	i;
 
 	i = 0;
 	if (str)
 		printf("%s\n", str);
-	pthread_mutex_destroy(&program->print_lock);
-	pthread_mutex_destroy(&program->meal_lock);
-	pthread_mutex_destroy(&program->dead_lock);
-	while (i < program->philos[0].num_of_philos)
+	pthread_mutex_destroy(&table->print_lock);
+	pthread_mutex_destroy(&table->meal_lock);
+	pthread_mutex_destroy(&table->dead_lock);
+	while (i < table->philos[0].num_of_philos)
 	{
 		pthread_mutex_destroy(&forks[i]);
 		i++;
