@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:22:48 by ilyanbendib       #+#    #+#             */
-/*   Updated: 2024/03/14 12:00:37 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/25 12:02:08 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	ft_init_args(t_philo *philo, char **av)
 {
-	philo->num_of_philos = ft_atoi(av[1]);
-	philo->tt_d = ft_atoi(av[2]);
-	philo->tt_e = ft_atoi(av[3]);
-	philo->tt_s = ft_atoi(av[4]);
+	philo->num_of_philos = ft_atoi((av[1]), NULL);
+	philo->tt_d = ft_atoi((av[2]), NULL);
+	philo->tt_e = ft_atoi((av[3]), NULL);
+	philo->tt_s = ft_atoi((av[4]), NULL);
 	if (av[5])
-		philo->num_times_to_eat = ft_atoi(av[5]);
+		philo->num_times_to_eat = ft_atoi((av[5]), NULL);
 	else
 		philo->num_times_to_eat = -1;
 }
@@ -30,7 +30,7 @@ void	ft_init_philos(t_philo *philos, t_table *table,
 	int	i;
 
 	i = 0;
-	while (i < ft_atoi(argv[1]))
+	while (i < ft_atoi((argv[1]), NULL))
 	{
 		philos[i].id = i + 1;
 		philos[i].eating = 0;

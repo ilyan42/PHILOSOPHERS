@@ -6,36 +6,11 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 13:38:40 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/03/14 13:18:49 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:27:11 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-int	ft_atoi(char *str)
-{
-	int	i;
-	int	sign;
-	int	res;
-
-	i = 0;
-	sign = 1;
-	res = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = res * 10 + str[i] - '0';
-		i++;
-	}
-	return (res * sign);
-}
 
 void	print_philo(char *msg, t_philo *philo, int id)
 {
@@ -45,7 +20,7 @@ void	print_philo(char *msg, t_philo *philo, int id)
 	if (!check_died_flg(philo))
 	{
 		pthread_mutex_lock(philo->print_lock);
-		printf("%06llu \033[1;32m%d\033[0m \033[1;31m%s\033[0m\n", timestamp()
+		printf("%06llu %d %s\n", timestamp()
 			- philo->start_time, id, msg);
 		pthread_mutex_unlock(philo->print_lock);
 	}
@@ -65,7 +40,7 @@ int	ft_usleep(size_t milliseconds)
 
 	start = timestamp();
 	while ((timestamp() - start) < milliseconds)
-		usleep(50);
+		usleep(500);
 	return (0);
 }
 
@@ -85,4 +60,11 @@ void	destroy_mutex_init(char *str, t_table *table,
 		pthread_mutex_destroy(&forks[i]);
 		i++;
 	}
+}
+
+int	sleeping(t_philo *philo)
+{
+	print_philo("is sleeping", philo, philo->id);
+	ft_usleep(philo->tt_s);
+	return (1);
 }

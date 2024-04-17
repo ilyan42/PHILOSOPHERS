@@ -6,7 +6,7 @@
 /*   By: ilbendib <ilbendib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:14:31 by ilbendib          #+#    #+#             */
-/*   Updated: 2024/03/14 12:02:34 by ilbendib         ###   ########.fr       */
+/*   Updated: 2024/03/25 12:05:38 by ilbendib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void				ft_init_forks(pthread_mutex_t *forks, int num_of_philos);
 
 /********FT_UTILS********/
 
-int					ft_atoi(char *str);
 void				destroy_mutex_init(char *msg, t_table *table,
 						pthread_mutex_t *forks);
 void				print_philo(char *msg, t_philo *philo, int id);
@@ -89,5 +88,8 @@ void				*loop_dead(void *arg);
 /********FT_ERROR_MSG********/
 
 void				ft_error_msg(char *msg);
+int					check_args(char *argv[]);
+long int			ft_atoi(const char *str, int *error);
+char				*ft_itoa(long int n);
 
 #endif
